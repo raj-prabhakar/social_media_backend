@@ -80,3 +80,4 @@ The API endpoints are organized around the following resources:
 - User Relationships
 - Feed
 
+Here is the link of the Postman Collection of complete APIs : https://solar-meadow-67595.postman.co/workspace/My-Workspace~3d2d1f70-73a4-4b31-8879-e51f5db12257/collection/31250549-dc86d4c1-998b-437d-ab17-601568b4dc74?action=share&creator=31250549
