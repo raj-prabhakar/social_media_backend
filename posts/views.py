@@ -25,37 +25,16 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
-    pagination_class = PostPagination
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        queryset = Post.objects.all()
+        # Get post ID from URL parameter
+        post_id = self.kwargs.get('pk')
         
-        username = self.request.query_params.get('author', None)
-        if username:
-            # Remove any quotes from the username
-            username = username.strip('"')
-            queryset = queryset.filter(author__username=username)
-        
-        # Exclude posts from blocked and hidden users
-        if self.request.user.is_authenticated:
-            blocked_hidden = UserAction.objects.filter(
-                user=self.request.user,
-                action__in=['HIDE', 'BLOCK'],
-                status=True
-            ).values_list('target_user', flat=True)
-            queryset = queryset.exclude(author__in=blocked_hidden)
-        
-        # return queryset    
-        return queryset.select_related('author')
+        # Return just the specific post
+        return Post.objects.filter(id=post_id).select_related('author')
 
-    def perform_create(self, serializer):
-        """Set the author to the current user when creating a post"""
-        serializer.save(author=self.request.user)
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)

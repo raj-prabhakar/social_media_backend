@@ -7,9 +7,6 @@ urlpatterns = [
         'post': 'create'
     }), name='posts'),
     path('posts/<int:pk>/', views.PostViewSet.as_view({
-        'get': 'retrieve',
-        'put': 'update',
-        'patch': 'partial_update',
-        'delete': 'destroy'
-    }), name='post-detail'),
+    'get': 'retrieve'
+}), name='post-detail'),
 ]
