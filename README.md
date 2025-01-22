@@ -72,6 +72,8 @@ The API uses JWT (JSON Web Token) authentication. The following configurations a
 
 The project uses PostgreSQL as its database. The connection is configured using environment variables through the `DATABASE_URL`.
 
+Data Modelling or Schema : https://app.eraser.io/workspace/r6iqMz4OKhmHpUwa4AG4?origin=share
+
 ## API Endpoints
 
 The API endpoints are organized around the following resources:
